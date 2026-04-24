@@ -64,15 +64,6 @@ swiftsvd-compress --config CONFIG #run compression only
 ```
 
 
-##Results
-Our main intuition for moving from CNN-based, ultra light-weight OCR models, is their inability to handle complex environments, like handwritten Russian or Russian in the wild, where multiple backgrounds and differnet rotations and alignments are hard to capture.
-
-This is why we decided to move to VLMs, Although they can hand these limitations much better, they suffer from resource inefficiency and high VRAM usage.
-So to make them more accessible, all while trying to get as much of the performance as possible, we did compress a relatively small VL model, namely Qwen/Qwen3-VL-2B-Instruct by 50% to a 1B model, followed by a light-weight healing on 1000 steps, and evaluated on different benchmarks, including HandWritten Data, Text in the wild, and Simple Scanned data.
-
-we can see from the results that the compressed model is very competitive compared to the Base QwenVL base model (pre-compression) and got much better results than the best open source ultra light-weight model (PPOCR-v5) on complex environments (Hand written and on the wild), while PPOCR-v5 remains very competitive on simple scenarios as expected
-
-
 ### Motivation & Approach
 Traditional CNN-based ultra-lightweight OCR models often struggle in complex, real-world scenarios. They frequently fail to accurately process handwritten Russian text or in-the-wild documents, where varying backgrounds, rotations, and text alignments pose significant challenges.
 
