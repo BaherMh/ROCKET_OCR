@@ -1,0 +1,31 @@
+from setuptools import setup, find_packages
+
+setup(
+    name="rocket",
+    version="0.1.0",
+    packages=find_packages(),
+    python_requires=">=3.9",
+    install_requires=[
+        "torch==2.7.0",
+        "transformers==5.5.4",
+        "datasets==3.6.0",
+        "tqdm",
+        "numpy",
+        "lm-eval==0.4.9.2",
+        "pyyaml",
+        "accelerate==1.12.0",
+        "ortools==9.14.6206"
+    ],
+    entry_points={
+        "console_scripts": [
+            "swiftsvd-gather-activations=swiftsvd.scripts.gather_activations:main",
+            "swiftsvd-profile-layers=swiftsvd.scripts.profile_layers:main",
+            "swiftsvd-compress=swiftsvd.scripts.compress_model:main",
+            "swiftsvd-evaluate=swiftsvd.scripts.evaluate_model:main",
+            "swiftsvd-run-pipeline=swiftsvd.scripts.run_full_pipeline:main",
+            "swiftsvd-eval-ppl=swiftsvd.scripts.perplexity:main"
+        ],
+    },
+    author=":)",
+    description="ROCKET: Structured Low-Rank + Sparsity Compression for transformers",
+)
