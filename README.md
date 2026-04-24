@@ -64,3 +64,24 @@ swiftsvd-compress --config CONFIG #run compression only
 ```
 
 
+##Results
+Our main intuition for moving from CNN-based, ultra light-weight OCR models, is their inability to handle complex environments, like handwritten Russian or Russian in the wild, where multiple backgrounds and differnet rotations and alignments are hard to capture.
+
+This is why we decided to move to VLMs, Although they can hand these limitations much better, they suffer from resource inefficiency and high VRAM usage.
+So to make them more accessible, all while trying to get as much of the performance as possible, we did compress a relatively small VL model, namely Qwen/Qwen3-VL-2B-Instruct by 50% to a 1B model, followed by a light-weight healing on 1000 steps, and evaluated on different benchmarks, including HandWritten Data, Text in the wild, and Simple Scanned data.
+
+we can see from the results that the compressed model is very competitive compared to the Base QwenVL base model (pre-compression) and got much better results than the best open source ultra light-weight model (PPOCR-v5) on complex environments (Hand written and on the wild), while PPOCR-v5 remains very competitive on simple scenarios as expected
+
+
+### Motivation & Approach
+Traditional CNN-based ultra-lightweight OCR models often struggle in complex, real-world scenarios. They frequently fail to accurately process handwritten Russian text or in-the-wild documents, where varying backgrounds, rotations, and text alignments pose significant challenges.
+
+While Vision-Language Models (VLMs) offer superior robustness in these conditions, they typically demand high VRAM and computational resources, limiting their accessibility for resource-constrained deployments. To bridge this gap, we compressed the `Qwen/Qwen3-VL-2B-Instruct` model by 50% down to a ~1B parameter variant, followed by a lightweight recovery fine-tuning phase (1,000 steps) to preserve critical OCR capabilities.
+
+### Evaluation & Results
+We evaluated the compressed model across three key benchmarks: **Handwritten Text**, **In-the-Wild Scenes**, and **Simple Scanned Text**.
+
+![Benchmark Results](figs/results.PNG)
+
+As illustrated above, the compressed model maintains performance highly competitive with the original 2B base model. Notably, it significantly outperforms `PPOCR-v5`—the leading open-source ultra-lightweight OCR model—on complex tasks (handwritten and in-the-wild). Meanwhile, `PPOCR-v5` remains highly effective on straightforward scanned text, as expected..
+
