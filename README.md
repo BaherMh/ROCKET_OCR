@@ -5,14 +5,13 @@
 [![HuggingFace Collection](https://img.shields.io/badge/HuggingFace-Collection-yellow.svg?logo=huggingface)](https://huggingface.co/MTSAIR/ROCKET-Qwen-8b)
 [![Kaggle](https://img.shields.io/badge/Kaggle-Notebook-20beff?logo=kaggle&logoColor=white)]()
 ![ROCKET Architecture](figs/logo.png)
-In a quiet corner of the AI research lab, a cartoon rocket stood on the launchpad—bright red, cheerful, and boldly labeled “LLM.” At the control console sat a scientist, fingers hovering over a single, enormous red button marked “Solve MCKP.”
-With a deep breath and a flicker of hope, they pressed it.
-The rocket roared to life. Flames erupted, scattering clouds of sparse matrices like confetti made of zeros. As the LLM blasted into the stratosphere of efficient inference, it left behind on the pad a humble knapsack overflowing not with gold, but with perfectly balanced (rank, sparsity) pairs: the optimal solutions to the Multiple-Choice Knapsack Problem, handpicked for model compression.
-Up it soared lighter, faster, smarter carrying only what truly mattered.
+
+This Repo is build upon our compression algorithm (ROCKET), which is a general LLM's compression algorithm and slightly edited to be trailored for VLM models, to make it easier to follow and understand for commitee
+
 ```
 rocket/
 ├── setup.py
-├── rocket/
+├── swiftsvd/
 │   ├── __init__.py
 │   ├── config/
 │   │   └── default.yaml
@@ -51,28 +50,17 @@ Then run
 pip install -e .
 ```
 ## Running
-We provide multiple console entrypoints to run the full pipeline you can easily do 
-```bash
-rocket-run-pipeline --config "./rocket/config/default.yaml"
-```
-you can use the sample <a href="./rocket/config/default.yaml">config</a> fie and modify it according to your requirements 
+
+to compress Qwen3-VL mode, you should first run calibration data gathering, to do so you can easily run notebook collect_calib_vl.ipynb, and modify the path save_base_dir as you wish.
+
+
+After that, we provide multiple console entrypoints to run the full pipeline you can easily do (Please don't forget to update the configuration file to add the path to your calib data at config["calib"]["data_path"])
+
+you can use the sample <a href="./rocket/config/asr.yaml">config</a> fie and modify it according to your requirements 
 Other entrypoint are:
 ```bash
-rocket-profile-layers --config CONFIG # To do profiling only
-rocket-compress --config CONFIG #run compression only
-rocket-evaluate --config CONFIG # Evaluation only
-rocket-gather-activations --config CONFIG # Prepare Calibration data
+swiftsvd-profile-layers --config CONFIG # To do profiling only (knapsack)
+swiftsvd-compress --config CONFIG #run compression only
 ```
 
-## Inference optimized
-Note that we provide in extra folder a modeling file to run the optimized verison which includes implementation of Macko and fuzed layers. 
-to use the optimized version after you finish compression you load the model from the modeling file and call optimize
-```python
-from transformers import AutoModelForCausalLM, AutoTokenizer
-from modeling_llama_svdllm_opt import LlamaForCausalLM
-model = LlamaForCausalLM.from_pretrained("MODEL_PATH", device_map="cuda", torch_dtype="float16", compression_path="./cr_llama.json")
-tokenizer = AutoTokenizer.from_pretrained("MODEL_PATH")
-model.optimize()
-model = torch.compile(model, mode="reduce-overhead", fullgraph=True)
-```
-If you run without calling optimize you will be running the trivial implementation
+
