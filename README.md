@@ -49,8 +49,10 @@ pip install -e .
 ```
 ## Running
 
-to compress Qwen3-VL mode, you should first run calibration data gathering, to do so you can easily run notebook collect_calib_vl.ipynb, and modify the path save_base_dir as you wish.
-
+to compress Qwen3-VL mode, you should first run calibration data gathering, by running this command.
+```bash
+python collect_calib.py --save_dir /your/path --num_samples 256 #(number of calibration data samples)
+```
 
 After that, we provide multiple console entrypoints to run the full pipeline you can easily do (Please don't forget to update the configuration file to add the path to your calib data at config["calib"]["data_path"])
 
