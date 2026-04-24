@@ -24,7 +24,7 @@ rocket/
 │   │   └── profiler.py              # profile_all_layers, get_k_and_sparsity, etc. (for dynamic budget allocation)
 │   ├── compression/
 │   │   ├── __init__.py
-│   │   └── rocket.py              # svd_with_magnitude_sparsity_on_v, model patching
+│   │   └── swiftsvd.py              # svd_with_magnitude_sparsity_on_v, model patching
 │   ├── utils/
 │   │   ├── __init__.py
 │   │   ├── seed.py                  # seed_all
